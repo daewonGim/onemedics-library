@@ -1,11 +1,5 @@
 export {
-  default as AxiosClient,
-  getUserInfo,
-  updateAppDeviceToken,
-  getEmrInfo,
-  createUserInfo,
-  confirmPassword,
-  updatePassword
+  default as AxiosClient
 } from "./RESTful";
 
 export {

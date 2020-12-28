@@ -39,11 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.confirmPassword = exports.createUserInfo = exports.getEmrInfo = exports.updateAppDeviceToken = exports.getUserInfo = exports.oauthLogin = exports.serverHealthCheck = void 0;
 var axios_1 = __importDefault(require("axios"));
 var Client = /** @class */ (function () {
     function Client(OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION, showToast) {
         this.token = "";
+        this.token = OAUTH_BASIC_KEY;
         this.axios = axios_1.default.create({
             baseURL: GW_API_BASE_URL,
             timeout: API_REQUEST_TIMEOUT,
@@ -53,6 +53,22 @@ var Client = /** @class */ (function () {
                 ClientId: APP_CLIENT_ID,
                 AppVersion: APP_VERSION
             }
+        });
+        // 공통 오류 처리
+        this.axios.interceptors.response.use(function (response) {
+            // 성공 로직에 별도 추가하지 않음
+            return response;
+        }, function (error) {
+            // 실패 로직에 500 에러 메시지 표시
+            if (error && error.response && error.response.status === 500) {
+                // 오류 toast 표시
+                showToast && showToast({
+                    backgroundColor: 'red',
+                    toastMessage: '오류가 발생 했습니다. 관리자에게 문의바랍니다.',
+                });
+                return Promise.reject(error);
+            }
+            return Promise.reject(error);
         });
     }
     Client.prototype.updateAuthorizationToken = function (accessToken) {
@@ -91,76 +107,100 @@ var Client = /** @class */ (function () {
             .delete(path, payload)
             .then(function (result) { return result; });
     };
+    Client.prototype.serverHealthCheck = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.get("/dosoo/health/check")];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.oauthLogin = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.updateAuthorizationToken(this.token);
+                        return [4 /*yield*/, this.post("/oauth/token", params)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.getUserInfo = function (access_token) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.updateAuthorizationToken("Bearer " + access_token);
+                        return [4 /*yield*/, this.get("/dosoo/v1/member/me")];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.updateAppDeviceToken = function (access_token, params) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.updateAuthorizationToken("Bearer " + access_token);
+                        return [4 /*yield*/, this.post("/dosoo/v1/device-token", params)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.getEmrInfo = function (accessToken, paymentId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.post("/dosoo/v2/api/pay/detail/" + paymentId, JSON)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.createUserInfo = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.post("/auth/v1/user/signup", params)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.confirmPassword = function (password) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.post("/auth/v1/user/confirmPassword", password)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
+    Client.prototype.updatePassword = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.post("/auth/v1/user/updatePassword", params)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ;
     return Client;
 }());
 exports.default = Client;
-exports.serverHealthCheck = function (client, path) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.get("/dosoo/health/check")];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.oauthLogin = function (client, OAUTH_BASIC_KEY, params) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                client.updateAuthorizationToken(OAUTH_BASIC_KEY);
-                return [4 /*yield*/, client.post("/oauth/token", params)];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.getUserInfo = function (client, access_token) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                client.updateAuthorizationToken("Bearer " + access_token);
-                return [4 /*yield*/, client.get("/dosoo/v1/member/me")];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.updateAppDeviceToken = function (client, access_token, params) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                client.updateAuthorizationToken("Bearer " + access_token);
-                return [4 /*yield*/, client.post("/dosoo/v1/device-token", params)];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.getEmrInfo = function (client, accessToken, paymentId) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.post("/dosoo/v2/api/pay/detail/" + paymentId, {})];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.createUserInfo = function (client, params) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.post("/auth/v1/user/signup", params)];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.confirmPassword = function (client, password) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.post("/auth/v1/user/confirmPassword", password)];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-exports.updatePassword = function (client, params) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.post("/auth/v1/user/updatePassword", params)];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };

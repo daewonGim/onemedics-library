@@ -74,6 +74,7 @@ var apollo_boost_1 = __importStar(require("apollo-boost"));
 var apollo_link_error_1 = require("apollo-link-error");
 var apollo_link_context_1 = require("apollo-link-context");
 var cross_fetch_1 = __importDefault(require("cross-fetch"));
+/* App용 apollo client */
 exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
     var httpLink = new apollo_boost_1.HttpLink({
         uri: "" + DOSOO_API_BASE_URL
@@ -116,6 +117,7 @@ exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
         cache: cache
     });
 };
+/* Web용 apollo client */
 exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
     return new apollo_boost_1.default({
         uri: DOSOO_API_BASE_URL,
@@ -132,6 +134,7 @@ exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
         }
     });
 };
+/* Web용 apollo client */
 exports.apolloUserWebClient = function (USER_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
     return new apollo_boost_1.default({
         uri: USER_API_BASE_URL,
