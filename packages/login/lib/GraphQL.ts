@@ -11,28 +11,11 @@ import { setContext } from "apollo-link-context";
 import fetch from "cross-fetch";
 import {GraphQLRequest} from 'apollo-link';
 
-interface StorageForApp {
-  constructor(): void;
-  set(key: string, value: string | object): Promise<Boolean>;
-  multiSet(itemList: [string, string][]): Promise<Boolean>;
-  get(key: string): Promise<Boolean>;
-  multiGet(keyList: string[]): Promise<void | [string, string | null][]>;
-  remove(key: string): Promise<Boolean>;
-  multiRemove(keyList: string[]): Promise<Boolean>;
-  clearAll(): Promise<Boolean>;
-}
-
-type StorageForWeb = {
-  set(key: string, value: any): void;
-  get(key: string): any;
-  remove(key: string): void;
-  clear(): void;
-};
 
 const apolloAppClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
-  storage: StorageForApp,
+  storage: any,
   validateTokenExp: () => Promise<boolean>,
   OAUTH_BASIC_KEY: string,
   APP_CLIENT_ID: string,
@@ -84,7 +67,7 @@ export default apolloAppClient;
 export const apolloWebClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
-  storage: StorageForWeb
+  storage: any
 ): ApolloClient<object> => {
   return new DefaultClient({
     uri: DOSOO_API_BASE_URL,
@@ -105,7 +88,7 @@ export const apolloWebClient = (
 export const apolloUserWebClient = (
   USER_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
-  storage: StorageForWeb
+  storage: any
 ): ApolloClient<object> => {
   return new DefaultClient({
     uri: USER_API_BASE_URL,
