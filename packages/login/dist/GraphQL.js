@@ -69,12 +69,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.apolloUserWebClient = exports.apolloWebClient = void 0;
+exports.apolloUserWebClient = exports.apolloWebClient = exports.apolloAppClient = void 0;
 var apollo_boost_1 = __importStar(require("apollo-boost"));
 var apollo_link_error_1 = require("apollo-link-error");
 var apollo_link_context_1 = require("apollo-link-context");
 var cross_fetch_1 = __importDefault(require("cross-fetch"));
-var apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
+exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
     var httpLink = new apollo_boost_1.HttpLink({
         uri: "" + DOSOO_API_BASE_URL
     });
@@ -116,7 +116,6 @@ var apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_AC
         cache: cache
     });
 };
-exports.default = apolloAppClient;
 exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
     return new apollo_boost_1.default({
         uri: DOSOO_API_BASE_URL,

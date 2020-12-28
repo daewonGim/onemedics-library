@@ -12,7 +12,7 @@ import fetch from "cross-fetch";
 import {GraphQLRequest} from 'apollo-link';
 
 
-const apolloAppClient = (
+export const apolloAppClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
   storage: any,
@@ -20,7 +20,7 @@ const apolloAppClient = (
   OAUTH_BASIC_KEY: string,
   APP_CLIENT_ID: string,
   APP_VERSION: string
-): ApolloClient<NormalizedCacheObject> => {
+):  ApolloClient<NormalizedCacheObject> => {
   const httpLink = new HttpLink({
     uri: `${DOSOO_API_BASE_URL}`
   });
@@ -61,8 +61,6 @@ const apolloAppClient = (
     cache
   });
 };
-
-export default apolloAppClient;
 
 export const apolloWebClient = (
   DOSOO_API_BASE_URL: string,

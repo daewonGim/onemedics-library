@@ -9,7 +9,7 @@ export {
 } from "./RESTful";
 
 export {
-  default as apolloAppClient,
+  apolloAppClient,
   apolloWebClient,
   apolloUserWebClient
 } from "./GraphQL";

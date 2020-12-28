@@ -13,6 +13,6 @@ Object.defineProperty(exports, "createUserInfo", { enumerable: true, get: functi
 Object.defineProperty(exports, "confirmPassword", { enumerable: true, get: function () { return RESTful_1.confirmPassword; } });
 Object.defineProperty(exports, "updatePassword", { enumerable: true, get: function () { return RESTful_1.updatePassword; } });
 var GraphQL_1 = require("./GraphQL");
-Object.defineProperty(exports, "apolloAppClient", { enumerable: true, get: function () { return __importDefault(GraphQL_1).default; } });
+Object.defineProperty(exports, "apolloAppClient", { enumerable: true, get: function () { return GraphQL_1.apolloAppClient; } });
 Object.defineProperty(exports, "apolloWebClient", { enumerable: true, get: function () { return GraphQL_1.apolloWebClient; } });
 Object.defineProperty(exports, "apolloUserWebClient", { enumerable: true, get: function () { return GraphQL_1.apolloUserWebClient; } });
