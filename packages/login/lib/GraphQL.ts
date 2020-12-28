@@ -11,8 +11,8 @@ import { setContext } from "apollo-link-context";
 import fetch from "cross-fetch";
 import {GraphQLRequest} from 'apollo-link';
 
-declare class StorageForApp{
-  constructor();
+interface StorageForApp {
+  constructor(): void;
   set(key: string, value: string | object): Promise<Boolean>;
   multiSet(itemList: [string, string][]): Promise<Boolean>;
   get(key: string): Promise<Boolean>;

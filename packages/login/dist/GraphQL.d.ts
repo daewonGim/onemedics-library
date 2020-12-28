@@ -1,6 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-declare class StorageForApp {
-    constructor();
+interface StorageForApp {
+    constructor(): void;
     set(key: string, value: string | object): Promise<Boolean>;
     multiSet(itemList: [string, string][]): Promise<Boolean>;
     get(key: string): Promise<Boolean>;
