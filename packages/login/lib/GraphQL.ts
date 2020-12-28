@@ -9,9 +9,10 @@ import DefaultClient, {
 import { onError } from "apollo-link-error";
 import { setContext } from "apollo-link-context";
 import fetch from "cross-fetch";
+import {GraphQLRequest} from 'apollo-link';
 
-type StorageForApp = {
-  constructor(): void;
+declare class StorageForApp{
+  constructor();
   set(key: string, value: string | object): Promise<Boolean>;
   multiSet(itemList: [string, string][]): Promise<Boolean>;
   get(key: string): Promise<Boolean>;
@@ -19,7 +20,8 @@ type StorageForApp = {
   remove(key: string): Promise<Boolean>;
   multiRemove(keyList: string[]): Promise<Boolean>;
   clearAll(): Promise<Boolean>;
-};
+}
+
 type StorageForWeb = {
   set(key: string, value: any): void;
   get(key: string): any;
@@ -41,7 +43,7 @@ const apolloAppClient = (
   });
   const cache = new InMemoryCache();
 
-  const authLink = setContext(async (_, { headers }) => {
+  const authLink = setContext(async (_:GraphQLRequest, { headers }) => {
     const token = await storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
     const isTokenValid = await validateTokenExp();
 

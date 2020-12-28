@@ -1,6 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-declare type StorageForApp = {
-    constructor(): void;
+declare class StorageForApp {
+    constructor();
     set(key: string, value: string | object): Promise<Boolean>;
     multiSet(itemList: [string, string][]): Promise<Boolean>;
     get(key: string): Promise<Boolean>;
@@ -8,7 +8,7 @@ declare type StorageForApp = {
     remove(key: string): Promise<Boolean>;
     multiRemove(keyList: string[]): Promise<Boolean>;
     clearAll(): Promise<Boolean>;
-};
+}
 declare type StorageForWeb = {
     set(key: string, value: any): void;
     get(key: string): any;
