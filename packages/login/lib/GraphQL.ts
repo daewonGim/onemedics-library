@@ -11,7 +11,7 @@ import { setContext } from "apollo-link-context";
 import fetch from "cross-fetch";
 import {GraphQLRequest} from 'apollo-link';
 
-
+/* App용 apollo client */
 export const apolloAppClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
@@ -62,6 +62,7 @@ export const apolloAppClient = (
   });
 };
 
+/* Web용 apollo client */
 export const apolloWebClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
@@ -83,6 +84,7 @@ export const apolloWebClient = (
   });
 };
 
+/* Web용 apollo client */
 export const apolloUserWebClient = (
   USER_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
