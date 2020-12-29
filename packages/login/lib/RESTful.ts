@@ -8,6 +8,21 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Client, JoinFormData } from "../../common/lib";
 
 class LoginClient extends Client {
+  constructor(
+    OAUTH_BASIC_KEY: string | object,
+    GW_API_BASE_URL: string,
+    API_REQUEST_TIMEOUT: number,
+    APP_CLIENT_ID?: string,
+    APP_VERSION?: string
+  ) {
+    super(
+      OAUTH_BASIC_KEY,
+      GW_API_BASE_URL,
+      API_REQUEST_TIMEOUT,
+      APP_CLIENT_ID,
+      APP_VERSION
+    );
+  }
   async serverHealthCheck() {
     return await this.get("/dosoo/health/check");
   }

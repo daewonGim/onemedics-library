@@ -58,8 +58,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lib_1 = require("../../common/lib");
 var LoginClient = /** @class */ (function (_super) {
     __extends(LoginClient, _super);
-    function LoginClient() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function LoginClient(OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION) {
+        return _super.call(this, OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION) || this;
     }
     LoginClient.prototype.serverHealthCheck = function () {
         return __awaiter(this, void 0, void 0, function () {
