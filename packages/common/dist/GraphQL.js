@@ -69,15 +69,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.apolloWebClient = exports.apolloAppClient = void 0;
+exports.WebApolloClient = exports.AppApolloClient = void 0;
 var apollo_boost_1 = __importStar(require("apollo-boost"));
 var apollo_link_error_1 = require("apollo-link-error");
 var apollo_link_context_1 = require("apollo-link-context");
 var cross_fetch_1 = __importDefault(require("cross-fetch"));
 /* App용 apollo client */
-exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
+exports.AppApolloClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
     var httpLink = new apollo_boost_1.HttpLink({
-        uri: "" + DOSOO_API_BASE_URL
+        uri: "" + DOSOO_API_BASE_URL,
     });
     var cache = new apollo_boost_1.InMemoryCache();
     var authLink = apollo_link_context_1.setContext(function (_, _a) {
@@ -93,7 +93,7 @@ exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
                     case 2:
                         isTokenValid = _b.sent();
                         return [2 /*return*/, {
-                                headers: __assign(__assign({}, headers), { Authorization: isTokenValid ? "Bearer " + token : OAUTH_BASIC_KEY, ClientId: APP_CLIENT_ID, AppVersion: APP_VERSION })
+                                headers: __assign(__assign({}, headers), { Authorization: isTokenValid ? "Bearer " + token : OAUTH_BASIC_KEY, ClientId: APP_CLIENT_ID, AppVersion: APP_VERSION }),
                             }];
                 }
             });
@@ -114,11 +114,17 @@ exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
     });
     return new apollo_boost_1.ApolloClient({
         link: apollo_boost_1.ApolloLink.from([httpAuthLink, errorLink]),
-        cache: cache
+        cache: cache,
     });
 };
 /* Web용 apollo client */
-exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
+/**
+ *
+ * @todo
+ *    DefulatClient의 경우 ApolloClient<T>를 상속받아 쓰는 별도의 apollo-boost 패키지에 포함된 Class
+ *    추후 변경이 필요함
+ * */
+exports.WebApolloClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
     return new apollo_boost_1.default({
         uri: DOSOO_API_BASE_URL,
         fetch: cross_fetch_1.default,
@@ -127,10 +133,10 @@ exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
             if (token) {
                 operation.setContext({
                     headers: {
-                        authorization: token ? "Bearer " + token : ""
-                    }
+                        authorization: token ? "Bearer " + token : "",
+                    },
                 });
             }
-        }
+        },
     });
 };

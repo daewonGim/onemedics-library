@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,70 +48,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
-var Client = /** @class */ (function () {
-    function Client(OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION) {
-        this.token = "";
-        this.token = OAUTH_BASIC_KEY;
-        this.axios = axios_1.default.create({
-            baseURL: GW_API_BASE_URL,
-            timeout: API_REQUEST_TIMEOUT,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: this.token,
-                ClientId: APP_CLIENT_ID,
-                AppVersion: APP_VERSION
-            }
-        });
-        // 공통 오류 처리
-        this.axios.interceptors.response.use(function (response) {
-            // 성공 로직에 별도 추가하지 않음
-            return response;
-        }, function (error) {
-            return Promise.reject(error);
-        });
+/*
+ *
+ * @todo
+ *   npm 업로드시   ../../common/lib/RESTful 는 npm에 있는 @onemedics-library/common 에서 불러오도록 변경필요
+ *
+ * */
+var lib_1 = require("../../common/lib");
+var LoginClient = /** @class */ (function (_super) {
+    __extends(LoginClient, _super);
+    function LoginClient() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Client.prototype.updateAuthorizationToken = function (accessToken) {
-        this.axios.defaults.headers.Authorization = accessToken
-            ? {
-                toString: function () {
-                    return accessToken;
-                }
-            }
-            : this.token;
-    };
-    Client.prototype.get = function (path, payload) {
-        return this.axios
-            .get(path, payload)
-            .then(function (response) { return response; });
-    };
-    Client.prototype.post = function (path, payload) {
-        var options = {
-            headers: {
-                "Content-Type": payload instanceof FormData
-                    ? "multipart/form-data"
-                    : "application/json"
-            }
-        };
-        return this.axios
-            .post(path, payload, options)
-            .then(function (response) { return response; });
-    };
-    Client.prototype.put = function (path, payload) {
-        return this.axios
-            .put(path, payload)
-            .then(function (result) { return result; });
-    };
-    Client.prototype.delete = function (path, payload) {
-        return this.axios
-            .delete(path, payload)
-            .then(function (result) { return result; });
-    };
-    Client.prototype.serverHealthCheck = function () {
+    LoginClient.prototype.serverHealthCheck = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -108,21 +71,19 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.oauthLogin = function (params) {
+    LoginClient.prototype.oauthLogin = function (params) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.updateAuthorizationToken(this.token);
+                        this.updateAuthorizationToken(this.getToken());
                         return [4 /*yield*/, this.post("/oauth/token", params)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    ;
-    Client.prototype.getUserInfo = function (access_token) {
+    LoginClient.prototype.getUserInfo = function (access_token) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -134,8 +95,7 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.updateAppDeviceToken = function (access_token, params) {
+    LoginClient.prototype.updateAppDeviceToken = function (access_token, params) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -147,8 +107,7 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.getEmrInfo = function (accessToken, paymentId) {
+    LoginClient.prototype.getEmrInfo = function (accessToken, paymentId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -158,8 +117,7 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.createUserInfo = function (params) {
+    LoginClient.prototype.createUserInfo = function (params) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -169,8 +127,7 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.confirmPassword = function (password) {
+    LoginClient.prototype.confirmPassword = function (password) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -180,8 +137,7 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    Client.prototype.updatePassword = function (params) {
+    LoginClient.prototype.updatePassword = function (params) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -191,7 +147,6 @@ var Client = /** @class */ (function () {
             });
         });
     };
-    ;
-    return Client;
-}());
-exports.default = Client;
+    return LoginClient;
+}(lib_1.Client));
+exports.default = LoginClient;
