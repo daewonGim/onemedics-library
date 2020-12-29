@@ -9,12 +9,6 @@ export type JoinFormData = {
     authNumId: string;
     marketingAgreement: boolean;
 };
-export type ToastProps = {
-    toastMessage: string;
-    isVisible?: boolean;
-    backgroundColor: string;
-    isChecked?: boolean;
-};
 
 class Client {
     private axios: AxiosInstance;
@@ -26,7 +20,6 @@ class Client {
         API_REQUEST_TIMEOUT: number,
         APP_CLIENT_ID?: string,
         APP_VERSION?: string,
-        showToast?: (toastProps: ToastProps) => void
     ) {
         this.token = OAUTH_BASIC_KEY;
         this.axios = axios.create({
@@ -46,15 +39,6 @@ class Client {
                 return response;
             },
             (error) => {
-                // 실패 로직에 500 에러 메시지 표시
-                if (error && error.response && error.response.status === 500) {
-                    // 오류 toast 표시
-                    showToast && showToast({
-                        backgroundColor: 'red',
-                        toastMessage: '오류가 발생 했습니다. 관리자에게 문의바랍니다.',
-                    });
-                    return Promise.reject(error);
-                }
                 return Promise.reject(error);
             },
         );

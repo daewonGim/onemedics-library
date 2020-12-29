@@ -67,31 +67,9 @@ export const apolloWebClient = (
   DOSOO_API_BASE_URL: string,
   ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
   storage: any
-): ApolloClient<object> => {
+): ApolloClient<any> => {
   return new DefaultClient({
     uri: DOSOO_API_BASE_URL,
-    fetch,
-    request: (operation: Operation) => {
-      const token = storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
-      if (token) {
-        operation.setContext({
-          headers: {
-            authorization: token ? `Bearer ${token}` : ""
-          }
-        });
-      }
-    }
-  });
-};
-
-/* Web용 apollo client */
-export const apolloUserWebClient = (
-  USER_API_BASE_URL: string,
-  ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO: string,
-  storage: any
-): ApolloClient<object> => {
-  return new DefaultClient({
-    uri: USER_API_BASE_URL,
     fetch,
     request: (operation: Operation) => {
       const token = storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
