@@ -8,16 +8,10 @@ export declare type JoinFormData = {
     authNumId: string;
     marketingAgreement: boolean;
 };
-export declare type ToastProps = {
-    toastMessage: string;
-    isVisible?: boolean;
-    backgroundColor: string;
-    isChecked?: boolean;
-};
 declare class Client {
     private axios;
     private token;
-    constructor(OAUTH_BASIC_KEY: string | object, GW_API_BASE_URL: string, API_REQUEST_TIMEOUT: number, APP_CLIENT_ID?: string, APP_VERSION?: string, showToast?: (toastProps: ToastProps) => void);
+    constructor(OAUTH_BASIC_KEY: string | object, GW_API_BASE_URL: string, API_REQUEST_TIMEOUT: number, APP_CLIENT_ID?: string, APP_VERSION?: string);
     updateAuthorizationToken(accessToken?: string | object): void;
     get<T>(path: string, payload?: AxiosRequestConfig): Promise<AxiosResponse<any>>;
     post(path: string, payload: FormData | JoinFormData | JSON | string): Promise<AxiosResponse<any>>;

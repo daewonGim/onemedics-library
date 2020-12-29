@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var Client = /** @class */ (function () {
-    function Client(OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION, showToast) {
+    function Client(OAUTH_BASIC_KEY, GW_API_BASE_URL, API_REQUEST_TIMEOUT, APP_CLIENT_ID, APP_VERSION) {
         this.token = "";
         this.token = OAUTH_BASIC_KEY;
         this.axios = axios_1.default.create({
@@ -59,15 +59,6 @@ var Client = /** @class */ (function () {
             // 성공 로직에 별도 추가하지 않음
             return response;
         }, function (error) {
-            // 실패 로직에 500 에러 메시지 표시
-            if (error && error.response && error.response.status === 500) {
-                // 오류 toast 표시
-                showToast && showToast({
-                    backgroundColor: 'red',
-                    toastMessage: '오류가 발생 했습니다. 관리자에게 문의바랍니다.',
-                });
-                return Promise.reject(error);
-            }
             return Promise.reject(error);
         });
     }

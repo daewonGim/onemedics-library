@@ -69,7 +69,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.apolloUserWebClient = exports.apolloWebClient = exports.apolloAppClient = void 0;
+exports.apolloWebClient = exports.apolloAppClient = void 0;
 var apollo_boost_1 = __importStar(require("apollo-boost"));
 var apollo_link_error_1 = require("apollo-link-error");
 var apollo_link_context_1 = require("apollo-link-context");
@@ -121,23 +121,6 @@ exports.apolloAppClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAG
 exports.apolloWebClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
     return new apollo_boost_1.default({
         uri: DOSOO_API_BASE_URL,
-        fetch: cross_fetch_1.default,
-        request: function (operation) {
-            var token = storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
-            if (token) {
-                operation.setContext({
-                    headers: {
-                        authorization: token ? "Bearer " + token : ""
-                    }
-                });
-            }
-        }
-    });
-};
-/* Web용 apollo client */
-exports.apolloUserWebClient = function (USER_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
-    return new apollo_boost_1.default({
-        uri: USER_API_BASE_URL,
         fetch: cross_fetch_1.default,
         request: function (operation) {
             var token = storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
