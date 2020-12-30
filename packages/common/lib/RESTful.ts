@@ -28,9 +28,11 @@ class Client {
       }
     );
   }
+
   getToken(): string | object {
     return this.token;
   }
+
   updateAuthorizationToken(accessToken?: string | object) {
     this.axios.defaults.headers.Authorization = accessToken
       ? {
