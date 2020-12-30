@@ -35,3 +35,11 @@ export type ApolloClientConfig = {
   APP_CLIENT_ID: string;
   APP_VERSION: string;
 };
+
+export type AxiosClientConfig = {
+  OAUTH_BASIC_KEY: string | object;
+  GW_API_BASE_URL: string;
+  API_REQUEST_TIMEOUT: number;
+  APP_CLIENT_ID?: string;
+  APP_VERSION?: string;
+};

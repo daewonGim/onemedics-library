@@ -1,26 +1,20 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { JoinFormData } from "./types";
+import { AxiosClientConfig, JoinFormData } from "./types";
 
 class Client {
   private axios: AxiosInstance;
   private token: string | object = "";
 
-  constructor(
-    OAUTH_BASIC_KEY: string | object,
-    GW_API_BASE_URL: string,
-    API_REQUEST_TIMEOUT: number,
-    APP_CLIENT_ID?: string,
-    APP_VERSION?: string
-  ) {
-    this.token = OAUTH_BASIC_KEY;
+  constructor(config: AxiosClientConfig) {
+    this.token = config.OAUTH_BASIC_KEY;
     this.axios = axios.create({
-      baseURL: GW_API_BASE_URL,
-      timeout: API_REQUEST_TIMEOUT,
+      baseURL: config.GW_API_BASE_URL,
+      timeout: config.API_REQUEST_TIMEOUT,
       headers: {
         "Content-Type": "application/json",
         Authorization: this.token,
-        ClientId: APP_CLIENT_ID,
-        AppVersion: APP_VERSION,
+        ClientId: config.APP_CLIENT_ID,
+        AppVersion: config.APP_VERSION,
       },
     });
     // 공통 오류 처리
