@@ -1,13 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-export declare type JoinFormData = {
-    username: string;
-    loginId: string;
-    phone: string;
-    password: string;
-    authNum: string;
-    authNumId: string;
-    marketingAgreement: boolean;
-};
+import { JoinFormData } from "./types";
 declare class Client {
     private axios;
     private token;

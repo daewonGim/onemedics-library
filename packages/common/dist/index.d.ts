@@ -1,3 +1,3 @@
-export { default as AxiosClient } from "./RESTful";
+export { default as Client } from "./RESTful";
 export { AppApolloClient, WebApolloClient } from "./GraphQL";
-export { Storage } from "./types";
+export { Storage, JoinFormData } from "./types";

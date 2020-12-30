@@ -15,8 +15,8 @@ var Client = /** @class */ (function () {
                 "Content-Type": "application/json",
                 Authorization: this.token,
                 ClientId: APP_CLIENT_ID,
-                AppVersion: APP_VERSION
-            }
+                AppVersion: APP_VERSION,
+            },
         });
         // 공통 오류 처리
         this.axios.interceptors.response.use(function (response) {
@@ -34,7 +34,7 @@ var Client = /** @class */ (function () {
             ? {
                 toString: function () {
                     return accessToken;
-                }
+                },
             }
             : this.token;
     };
@@ -48,8 +48,8 @@ var Client = /** @class */ (function () {
             headers: {
                 "Content-Type": payload instanceof FormData
                     ? "multipart/form-data"
-                    : "application/json"
-            }
+                    : "application/json",
+            },
         };
         return this.axios
             .post(path, payload, options)

@@ -10,25 +10,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -70,66 +51,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebApolloClient = exports.AppApolloClient = void 0;
-var apollo_boost_1 = __importStar(require("apollo-boost"));
-var apollo_link_error_1 = require("apollo-link-error");
+var apollo_boost_1 = __importDefault(require("apollo-boost"));
 var apollo_link_context_1 = require("apollo-link-context");
 var cross_fetch_1 = __importDefault(require("cross-fetch"));
 /* App용 apollo client */
-exports.AppApolloClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage, validateTokenExp, OAUTH_BASIC_KEY, APP_CLIENT_ID, APP_VERSION) {
-    var httpLink = new apollo_boost_1.HttpLink({
-        uri: "" + DOSOO_API_BASE_URL,
-    });
-    var cache = new apollo_boost_1.InMemoryCache();
-    var authLink = apollo_link_context_1.setContext(function (_, _a) {
+exports.AppApolloClient = function (config) {
+    var httpAuthLink = apollo_link_context_1.setContext(function (_, _a) {
         var headers = _a.headers;
         return __awaiter(void 0, void 0, void 0, function () {
             var token, isTokenValid;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO)];
+                    case 0: return [4 /*yield*/, config.storage.get(config.ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO)];
                     case 1:
                         token = _b.sent();
-                        return [4 /*yield*/, validateTokenExp()];
+                        return [4 /*yield*/, config.validateTokenExp()];
                     case 2:
                         isTokenValid = _b.sent();
                         return [2 /*return*/, {
-                                headers: __assign(__assign({}, headers), { Authorization: isTokenValid ? "Bearer " + token : OAUTH_BASIC_KEY, ClientId: APP_CLIENT_ID, AppVersion: APP_VERSION }),
+                                headers: __assign(__assign({}, headers), { Authorization: isTokenValid
+                                        ? "Bearer " + token
+                                        : config.OAUTH_BASIC_KEY, ClientId: config.APP_CLIENT_ID, AppVersion: config.APP_VERSION }),
                             }];
                 }
             });
         });
     });
-    var httpAuthLink = authLink.concat(httpLink);
-    var errorLink = apollo_link_error_1.onError(function (_a) {
-        var graphQLErrors = _a.graphQLErrors, networkError = _a.networkError;
-        if (graphQLErrors) {
-            graphQLErrors.map(function (_a) {
-                var message = _a.message, locations = _a.locations, path = _a.path;
-                return console.warn("[GraphQL error]: Message: " + message + ", Location: " + locations + ", Path: " + path);
-            });
-            if (networkError) {
-                console.warn("[Network error]: " + networkError);
-            }
-        }
-    });
-    return new apollo_boost_1.ApolloClient({
-        link: apollo_boost_1.ApolloLink.from([httpAuthLink, errorLink]),
-        cache: cache,
+    return new apollo_boost_1.default({
+        uri: config.DOSOO_API_BASE_URL,
+        headers: httpAuthLink,
     });
 };
 /* Web용 apollo client */
-/**
- *
- * @todo
- *    DefulatClient의 경우 ApolloClient<T>를 상속받아 쓰는 별도의 apollo-boost 패키지에 포함된 Class
- *    추후 변경이 필요함
- * */
-exports.WebApolloClient = function (DOSOO_API_BASE_URL, ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO, storage) {
+exports.WebApolloClient = function (config) {
     return new apollo_boost_1.default({
-        uri: DOSOO_API_BASE_URL,
+        uri: config.DOSOO_API_BASE_URL,
         fetch: cross_fetch_1.default,
         request: function (operation) {
-            var token = storage.get(ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
+            var token = config.storage.get(config.ACCESS_TOKEN__OF__STORAGE_ACCESS_INFO);
             if (token) {
                 operation.setContext({
                     headers: {
