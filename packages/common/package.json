@@ -1,7 +1,7 @@
 {
   "name": "@onemedics-library/common",
   "version": "1.0.0",
-  "description": "onemedics-library/login",
+  "description": "onemedics-library/common",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
